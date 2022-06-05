@@ -1,0 +1,283 @@
+<!-- templates/registration/signup.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Take trip{% endblock %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+.u-section-1 .u-image-1 {
+  height: 550px;
+  margin-top: -32%;
+  margin-bottom: 0;
+  margin-right: 60%;
+  padding-left:15px;
+}
+.main {
+  background: lightblue;
+  border-radius: 25px;
+  float: center;
+  width: 20%;
+  height: 180px;
+  padding: 10px 15px;
+  margin-top: 70px;
+  margin-left: 25px;
+  opacity: .8;
+}
+
+.clearfix{
+    clear:both
+}
+
+.w3-btn {width:150px;}
+    body {
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.b {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.b:hover {background-color: #3e8e41}
+
+.b:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+}
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+.tab {
+    display: inline-block;
+    margin-left: 40px;
+}
+
+</style>
+</head>
+<body id="bg" style="background-image: url('{% static '/accounts/kim.jpg' %}')">
+
+{% if user.is_authenticated %}
+  {% if user.is_superuser %}          <!--  admin - logged in -->
+    <div class="topnav">
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'addtrip' user.username %}">Add trip</a>
+      <a class="active" href="{% url 'alltrips' user.username %}">Available trips</a>
+      <a href="{% url 'upcoming_trips' user.username %}">Upcoming trips</a>
+      <a href="{% url 'gallery' %}">Gallery</a>
+      <a href="{% url 'change_password' user.username %}">change password</a>
+      <a href="{% url 'Add' %}">Add user</a>
+      <a href="{% url 'Terms' %}">Terms</a>
+      <a href="{% url 'user_info' %}">User Info</a>
+      <a href="{% url 'about' %}">About & Contact</a>
+      <a href="{% url 'admin_actions' %}">Admin Actions</a>
+      <a href="{% url 'changeinfo' user.id %}">Change Personal Info.</a>
+      <a href="{% url 'logout' %}">Log Out</a>
+    </div>
+
+  {% else %}                        <!--  account - logged in -->
+
+    {% if not user.accounts.approved %}
+      {% if user.accounts.is_doggiesitter %}          <!-- doggiesitter not approved yet -->
+
+      {% else %}                                    <!--  dog owner -->
+        {% if not user.is_superuser %}
+
+        {% endif %}
+    {% endif %}
+
+  {% else %}
+    {% if user.accounts.is_doggiesitter %}          <!--  approved doggiesitter -->
+      <div class="topnav">
+        <a href="{% url 'home' %}">Home</a>
+        <a class="active" href="{% url 'alltrips' user.username %}">Available trips</a>
+        <a href="{% url 'upcoming_trips' user.username %}">Upcoming trips</a>
+        <a href="{% url 'vet_map' user.username %}">Vet' map</a>
+        <a href="{% url 'parks' user.username %}">Parks</a>
+        <a href="{% url 'gallery' %}">Gallery</a>
+        <a href="{% url 'change_password' user.username %}">change password</a>
+        <a href="{% url 'Feedback' %}">Add Feedback</a>
+        <a href="{% url 'ShowFeedback' %}">Show Feedback</a>
+        <a href="{% url 'about' %}">About & Contact</a>
+        <a href="{% url 'changeinfo' user.id %}">Change My Info.</a>
+        <a href="{% url 'logout' %}">Log Out</a>
+      </div>
+    {% endif %}
+  {% endif %}
+{% endif %}
+{% endif %}
+
+<h2><span style="background-color:white; opacity: .7; border:3px solid #ccc; font:20px/26px Georgia, Garamond, Serif;">To make sure you are serious and not disappear, we charge you a security deposit, and at the end of the trip your money will be refunded plus the trip cost.<br> Thank you for understanding us.</span></h2>
+
+<center>
+
+    <span class="tab" style="background-color:white; opacity: .7; border:3px solid #ccc; font:20px/26px Georgia, Garamond, Serif;">
+
+      {% if trip.is_taken == False %}
+      Dog owner name: {{ trip.dog_owner }} <br>
+      Date: {{ trip.date }} <br>
+      Starting time: {{ trip.time }} <br>
+      End time: {{ trip.endtime }} <br>
+      Address for pickup: {{ trip.address }} <br>
+      Comments: {{ trip.comments }} <br>
+      Duration: {{ trip.duration }} <br>
+      Price: {{ trip.price }} <br>
+
+    </span>
+
+
+    <span class="tab" style="background-color:white; opacity: .7; border:3px solid #ccc; font:20px/26px Georgia, Garamond, Serif;">
+      Dog's Name: {{ dog.name }}<br>
+      Age:  {{ dog.age }}<br>
+      Gender:  {{ dog.gender }}<br>
+      Race:  {{ dog.race }}<br>
+      Dog's Size:  {{ dog.size }}<br>
+      Dog's Hobbies:  {{ dog.hobby }}<br>
+      Health Notes:  {{ dog.med }}
+    </span>
+  <br><br>
+
+  <div id="paypal-button-container"></div>
+
+    <!-- Include the PayPal JavaScript SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=Ab3qEA5Dvm03cwHLe8xC_HswXn3nkxYOKlmIeN5hsUV9mUvepXay2MOIWMKAT3VMCdYXQk4qLx2OwT2F&currency=ILS"></script>
+
+  {% else %}
+    <form method="POST" action="{% url 'upcoming_trips' user.username %}">
+      {% csrf_token %}
+      <center><button style="color:blue" type="submit">View upcoming trips</button></center>
+    </form>
+
+  {% endif %}
+
+</center>
+
+
+<script>
+
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+  }
+  const csrftoken = getCookie('csrftoken');
+
+        var total = '{{ trip.price }}'
+        var tripid = '{{ trip.trip_id }}'
+        var doggiesiter = '{{ user.username }}'
+
+        function depositcomplete()
+        {
+          var url = "{% url 'deposit_complete/' %}"
+          fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-type':'application/json',
+              'X-CSRFToken':csrftoken,
+            },
+            body:JSON.stringify({'tripid':tripid, 'doggiesitter':doggiesiter})
+          })
+        }
+
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+
+          style: {
+            shape: 'pill',
+            size: 'small',
+            height: 45
+          },
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: total
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(orderData) {
+                  depositcomplete()
+                    // Successful capture! For demo purposes:
+                    console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                    var transaction = orderData.purchase_units[0].payments.captures[0];
+                    // alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
+                    alert('We got your deposit, enjoy the trip! Thank you')
+
+                    // Replace the above to show a success message within this page, e.g.
+                    const element = document.getElementById('paypal-button-container');
+                    element.innerHTML = '';
+                    // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                });
+            }
+
+        }).render('#paypal-button-container');
+    </script>
+
+</body>
+</html>
+
+
+{% endblock %}
+

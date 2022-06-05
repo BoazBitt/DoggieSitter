@@ -1,0 +1,203 @@
+<!-- templates/registration/signup.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Show Feedback{% endblock %}
+
+{% block content %}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+.w3-btn {width:150px;}
+* {
+  box-sizing: border-box;
+}
+.main {
+  background: lightblue;
+  border-radius: 25px;
+  float: center;
+  width: 25%;
+  height: auto;
+  padding: 10px 15px;
+  margin-top: 70px;
+  margin-left: 25px;
+  opacity: .8;
+}
+.term {
+  background: lightgray;
+  float: center;
+}
+input[type=checkbox]
+{
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(2); /* IE */
+  -moz-transform: scale(2); /* FF */
+  -webkit-transform: scale(2); /* Safari and Chrome */
+  -o-transform: scale(2); /* Opera */
+  transform: scale(2);
+  padding: 10px;
+}
+.checkboxtext
+{
+  /* Checkbox text */
+  font-size: 110%;
+  display: inline;
+}
+button {
+  border: 1px solid #0066cc;
+  background-color: #0099cc;
+  color: #ffffff;
+  padding: 10px 24px;
+}
+button:hover {
+  border: 1px solid #0099cc;
+  background-color: #00aacc;
+  color: #ffffff;
+  padding: 10px 24px;
+}
+button:disabled,
+button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+div {
+  padding: 5px 10px;
+}
+
+#example1 {
+<!--  border: 2px solid black;-->
+  padding: 25px;
+  background: url('{% static '/accounts/Kim_Kai.jpg' %}');
+  background-repeat: no-repeat;
+  background-size: 1550px 1550px
+}
+
+.b {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+  p.double {border-style: double;}
+
+.b:hover {background-color: #3e8e41}
+
+.b:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+</style>
+</head>
+<body id="example1">
+
+    {% if user.is_authenticated %}
+      {% if user.accounts.is_doggiesitter and user.accounts.approved %}          <!--  approved doggiesitter -->
+        <div class="topnav">
+          <a href="{% url 'home' %}">Home</a>
+          <a href="{% url 'alltrips' user.username %}">Available trips</a>
+          <a href="{% url 'upcoming_trips' user.username %}">Upcoming trips</a>
+          <a href="{% url 'vet_map' user.username %}">Vet' map</a>
+          <a href="{% url 'parks' user.username %}">Parks</a>
+          <a href="{% url 'gallery' %}">Gallery</a>
+          <a href="{% url 'change_password' user.username %}">change password</a>
+          <a href="{% url 'Feedback' %}">Add Feedback</a>
+          <a class="active" href="{% url 'ShowFeedback' %}">Show Feedback</a>
+          <a href="{% url 'about' %}">About & Contact</a>
+          <a href="{% url 'changeinfo' user.id %}">Change My Info.</a>
+          <a href="{% url 'logout' %}">Log Out</a>
+        </div>
+      {% endif %}
+      {% if not user.accounts.is_doggiesitter  %}                   <!--  dog owner -->
+        <div class="topnav">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'addtrip' user.username %}">Add trip</a>
+            <a href="{% url 'alltrips' user.username %}">My trips</a>
+            <a href="{% url 'taken' user.username %}">Taken trips</a>
+            <a href="{% url 'Rate' user.username %}">Rate Doggiesitter</a>
+            <a href="{% url 'DogPage' user.id %}">Dog Page</a>
+            <a href="{% url 'gallery' %}">Gallery</a>
+            <a href="{% url 'change_password' user.username %}">change password</a>
+            <a href="{% url 'Feedback' %}">Add Feedback</a>
+            <a class="active" href="{% url 'ShowFeedback' %}">Show Feedback</a>
+            <a href="{% url 'about' %}">About & Contact</a>
+            <a href="{% url 'changeinfo' user.id %}">Change My Info.</a>
+            <a href="{% url 'logout' %}">Log Out</a>
+        </div>
+      {% endif %}
+  {% endif %}
+
+    <center>
+        <h1>Feedbacks</h1>
+
+        <div class="main">
+            {% for PostFeedback in object_list %}
+                {% if user.accounts.is_doggiesitter %}
+                    {% if PostFeedback.type == "dog" %}
+                        <p class="double">
+                            <p><b>Feedback from:</b> {{ PostFeedback.author }}</p>
+                            <p><b>The feedback is about:</b> {{ PostFeedback.about }}</p>
+                            <p><b>The feedback is:</b> {{ PostFeedback.body }}</p>
+                            <br>
+                        </p>
+                    {% endif %}
+                {% else %}
+                    {%  if PostFeedback.type == "doggiesitter" %}
+                        <p class="double">
+                            <p><b>Feedback from:</b> {{ PostFeedback.author }}</p>
+                            <p><b>The feedback is about:</b> {{ PostFeedback.about }}</p>
+                            <p><b>The feedback is:</b> {{ PostFeedback.body }}</p>
+                            <br>
+                        </p>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+            <br>
+            <a class="w3-button w3-green w3-round-xlarge " href="{% url 'home' %}">Back to home</a></p>
+    </center>
+</body>
+</html>
+{% endblock %}

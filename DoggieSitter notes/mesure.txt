@@ -1,0 +1,14 @@
+pip install pylint
+python -m pylint .\Dogisiter\ 
+
+pip install pylint-django  
+python -m pylint .\accounts\ .\Dogisiter\  --load-plugins=pylint_django
+
+
+
+
+pip install radon    
+radon cc  .\accounts\ -a  
+
+
+

@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}About & Contact{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.column {
+  float: left;
+  width: 25%;
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin: 2px;
+}
+
+.about-section {
+  padding: 50px;
+  text-align: center;
+  background-color: #feac00;
+  color: white;
+}
+
+.container {
+  padding: 0 10px;
+}
+
+.container::after, .row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.title {
+  color: grey;
+}
+
+.button {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+}
+
+.button:hover {
+  background-color: #555;
+}
+
+@media screen and (max-width: 650px) {
+  .column {
+    width: 100%;
+    display: block;
+  }
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+</style>
+</head>
+<body>
+
+
+{% if user.is_authenticated %}
+  {% if user.is_superuser %}          <!--  admin - logged in -->
+    <div class="topnav">
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'DogPage' user.id %}">Dog Page</a>
+      <a href="{% url 'addtrip' user.username %}">Add trip</a>
+      <a href="{% url 'alltrips' user.username %}">My Trips</a>
+      <a href="{% url 'taken' user.username %}">Taken trips</a>
+      <a href="{% url 'Rate' user.username %}">Rate Doggiesitter</a>
+      <a href="{% url 'gallery' %}">Gallery</a>
+      <a href="{% url 'change_password' user.username %}">change password</a>
+      <a href="{% url 'Add' %}">Add user</a>
+      <a href="{% url 'Terms' %}">Terms</a>
+      <a href="{% url 'user_info' %}">User Info</a>
+      <a class="active" href="{% url 'about' %}">About & Contact</a>
+      <a href="{% url 'admin_actions' %}">Admin Actions</a>
+      <a href="{% url 'logout' %}">Log Out</a>
+    </div>
+
+  {% else %}                        <!--  account - logged in -->
+
+    {% if not user.accounts.approved %}
+      {% if user.accounts.is_doggiesitter %}          <!-- doggiesitter not approved yet -->
+        <div class="topnav">
+          <a href="{% url 'home' %}">Home</a>
+          <a href="{% url 'gallery' %}">Gallery</a>
+          <a href="{% url 'change_password' user.username %}">change password</a>
+          <a class="active" href="{% url 'about' %}">About & Contact</a>
+          <a href="{% url 'changeinfo' user.id %}">Change My Info.</a>
+          <a href="{% url 'logout' %}">Log Out</a>
+        </div>
+
+      {% else %}                                    <!--  dog owner -->
+        {% if not user.is_superuser %}
+          <div class="topnav">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'addtrip' user.username %}">Add trip</a>
+            <a href="{% url 'alltrips' user.username %}">My trips</a>
+            <a href="{% url 'taken' user.username %}">Taken trips</a>
+            <a href="{% url 'Rate' user.username %}">Rate Doggiesitter</a>
+            <a href="{% url 'DogPage' user.id %}">Dog Page</a>
+            <a href="{% url 'gallery' %}">Gallery</a>
+            <a href="{% url 'change_password' user.username %}">change password</a>
+            <a href="{% url 'Feedback' %}">Add Feedback</a>
+            <a href="{% url 'ShowFeedback' %}">Show Feedback</a>
+            <a class="active" href="{% url 'about' %}">About & Contact</a>
+            <a href="{% url 'changeinfo' user.id %}">Change My Info.</a>
+            <a href="{% url 'logout' %}">Log Out</a>
+          </div>
+        {% endif %}
+    {% endif %}
+
+  {% else %}
+    {% if user.accounts.is_doggiesitter %}          <!--  approved doggiesitter -->
+      <div class="topnav">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'alltrips' user.username %}">Available trips</a>
+        <a href="{% url 'upcoming_trips' user.username %}">Upcoming trips</a>
+        <a href="{% url 'vet_map' user.username %}">Vet' map</a>
+        <a href="{% url 'parks' user.username %}">Parks</a>
+        <a href="{% url 'gallery' %}">Gallery</a>
+        <a href="{% url 'change_password' user.username %}">change password</a>
+        <a href="{% url 'Feedback' %}">Add Feedback</a>
+        <a href="{% url 'ShowFeedback' %}">Show Feedback</a>
+        <a class="active" href="{% url 'about' %}">About & Contact</a>
+        <a href="{% url 'changeinfo' user.id %}">Change My Info.</a>
+        <a href="{% url 'logout' %}">Log Out</a>
+      </div>
+    {% endif %}
+  {% endif %}
+{% endif %}
+{% endif %}
+
+<div class="about-section">
+  <h1>Contact Page</h1>
+  <p>Our company joined forces in order to benefit with the lives of the pets of or customers</p>
+  <p>We here to take care of your pets during your busy daily scheduled</p>
+  <p>Our Site was formed in order to imporove the pets' that we love so much life if you having trouble to take care of your pet</p>
+  <h1>We are here for you!</h1>
+  <p>we will take care of your dog and will raise his life quality so he will be able to live as he spouse to </p>
+    <h1>How to communicate?</h1>
+    <p>Below you will find all the site developers with the email and phone number of each of them.<p>
+    <p>If you want to communicate with one of them send them an email or message by phone and tell them your opinion or review</p>
+</div>
+<div class="column"> </div>
+
+<h2 style="text-align:center">Our Team</h2>
+<div class="row">
+  <div class="column">
+    <div class="card">
+      <img src="{% static '/accounts/team1.jpeg' %}" alt="Jane" style="width:100%; height: 360px;">
+      <div class="container">
+        <h2>Nadav Ishai</h2>
+        <p class="title">CEO & Founder</p>
+                <p>Nadav was a lead architect at Microsoft - Israel Before Starting his own startup to improve life for the pets and thier owners </p>
+
+        <p>NadavIsh@gmail.com</p>
+          <p>0524361818</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="card">
+      <img src="{% static '/accounts/team2.jpeg' %}" alt="Mike" style="width:100%; height:360px;">
+      <div class="container">
+        <h2>Elinor Tamar Elal</h2>
+        <p class="title">Art Director</p>
+        <p>Elinor considred a wonder in the world of design , some of her best logo designs are :Nike and Waze </p>
+        <p>EliTamar@gmail.com</p>
+        <p>0525734681</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="card">
+      <img src="{% static '/accounts/team3.jpeg' %}" alt="John" style="width:100%; height:360px;">
+      <div class="container">
+        <h2>Moran Shalom</h2>
+        <p class="title">Designer</p>
+        <p>After long service as one of the finest offices in a secret intelligence unit in the IDF Moran joined our company as a Database manager </p>
+        <p>moranShalvi@gmail.com</p>
+        <p>0505277847</p>
+      </div>
+    </div>
+  </div>
+
+    <div class="column">
+    <div class="card">
+      <img src="{% static '/accounts/team4.jpeg' %}" alt="John" style="width:100%; height:360px;">
+      <div class="container">
+        <h2>Boaz Bitton</h2>
+        <p class="title">QA Manager</p>
+        <p>Boaz is our lead Quality assurance manager Boaz developed new algorithm for testing with accuracy with high success rate </p>
+        <p>Boaz2118@gmail.com</p>
+          <p>0526203790</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+{% endblock %}

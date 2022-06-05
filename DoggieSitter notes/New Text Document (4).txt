@@ -1,0 +1,26 @@
+<center><h2><span style="background-color:white; opacity: .7; border:3px solid #ccc; font:20px/26px Georgia, Garamond, Serif;">All taken trips</span></h2></center><br><br><br>
+
+  {% for trip in trips %}
+  <form method="POST" action="{% url 'taken' user.username  %}" >
+  {% csrf_token %}
+    {% if trip.is_taken == True and trip.is_done == False %}
+      <span class="tab" style="background-color:white; opacity: .7; border:3px solid #ccc; font:20px/26px Georgia, Garamond, Serif;">
+        Dog owner name: {{ trip.dog_owner }} <br>
+        Dog  name: {{ trip.dog }} <br>
+        Dog Sitter name: {{ trip.doggiesitter }} <br>
+        Date: {{ trip.date }} <br>
+        Starting time: {{ trip.time }} <br>
+        End time: {{ trip.endtime }} <br>
+        Address for pickup: {{ trip.address }} <br>
+        Comments: {{ trip.comments }} <br>
+        Duration: {{ trip.duration }} <br>
+        Price: {{ trip.price }} <br>
+        <input type="checkbox" id="done" name="done" value="{{trip.trip_id}}">
+        <label for="done"> Trip is finshed</label><br>
+        <center><button style="color:blue" type="submit">Close Trip</button></center>
+
+
+      </span>
+    {% endif %}
+  </form>
+  {% endfor %}

@@ -1,0 +1,179 @@
+<!-- templates/registration/signup.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+
+<html>
+<head>
+<style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* {
+  box-sizing: border-box;
+}
+.main {
+  background: lightblue;
+  border-radius: 25px;
+  float: center;
+  width: 25%;
+  height: auto;
+  padding: 10px 15px;
+  margin-top: 70px;
+  margin-left: 25px;
+  opacity: .8;
+}
+.term {
+  background: lightgray;
+  float: center;
+}
+input[type=checkbox]
+{
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(2); /* IE */
+  -moz-transform: scale(2); /* FF */
+  -webkit-transform: scale(2); /* Safari and Chrome */
+  -o-transform: scale(2); /* Opera */
+  transform: scale(2);
+  padding: 10px;
+}
+.checkboxtext
+{
+  /* Checkbox text */
+  font-size: 110%;
+  display: inline;
+}
+button {
+  border: 1px solid #0066cc;
+  background-color: #0099cc;
+  color: #ffffff;
+  padding: 10px 24px;
+}
+button:hover {
+  border: 1px solid #0099cc;
+  background-color: #00aacc;
+  color: #ffffff;
+  padding: 10px 24px;
+}
+button:disabled,
+button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+div {
+  padding: 5px 10px;
+}
+
+#example1 {
+<!--  border: 2px solid black;-->
+  padding: 25px;
+  background: url('{% static '/accounts/kim&kai.jpg' %}');
+  background-repeat: no-repeat;
+  background-size: 1550px 1550px
+}
+
+.b {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.b:hover {background-color: #3e8e41}
+
+.b:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+</style>
+</head>
+</html>
+<body>
+<div id="example1">
+<center>
+<h2>Sign up</h2>
+
+<a  class="b" href="{% url 'home' %}">Back to home</a>
+      <form method="POST" name="clicked" action="{% url 'signup' %}">
+      <div class="main">
+            {% csrf_token %}
+            {% for field in form %}
+            <p>
+              {{ field.label_tag }}
+              {{ field }}
+
+              {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
+              {% endfor %}
+            </p>
+            {% endfor %}
+
+            {% for field in profile_form %}
+            <p>
+              {{ field.label }}
+              {{ field }}
+
+              {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
+              {% endfor %}
+            </p>
+          {% endfor %}
+</div>
+    <br><br>
+    <h2><span style="background-color:white;">Our site terms:</span></h2>
+    <div class="term" style="height:300px; width:1000px; border:3px solid #ccc; font:16px/26px Georgia, Garamond, Serif; overflow:auto;">
+         <h3 align="right"><ol>
+
+             {% for PostTerms in pt%}
+                    {% if PostTerms.title < 5 %}
+                     {% if PostTerms.title  == 1 %}
+                         <h2 align="right"><b><u>מדיניות החברה</u></b></h2>
+                         {{ PostTerms.body }}
+                    {% endif %}
+
+                    {% if PostTerms.title  == 2 %}
+                        <h2 align="right"><b><u>תנאי שימוש ומדיניות פרטיות</u></b></h2>
+                            {{ PostTerms.body }}
+                    {% endif %}
+                    {% if PostTerms.title  == 3 %}
+                         <h2><b><u>שימושים אסורים באתר</u></b></h2>
+                            {{ PostTerms.body }}
+                    {% endif %}
+
+                    {% if PostTerms.title  == 4 %}
+                        <h2 align="right"><b><u>אבטחת מידע</u></b></h2>
+                            {{ PostTerms.body }}
+                    {% endif %}
+                {% else %}
+            <br><br>
+                {{ PostTerms.body }}
+                {% endif %}
+        {% endfor %}
+            <h5>למען הנוחיות בלבד, תקנון זה מנוסח בלשון זכר אולם הוראותיו מתייחסות בהתאמה כמובן גם לנקבה. עמכן הסליחה *</h5>
+
+      </div>
+          <br><br>
+                <input type="checkbox" id="terms_confirm" onchange="document.getElementById('sub').disabled = !this.checked;" />
+                <span class="checkboxtext">
+                     <label style="background: white;" for="terms_confirm">  I read and confirm DoggiSitter terms<br></label><br>
+                </span>
+
+                <button id="sub" class="button" type="submit" disabled>Sign Up</button>
+      </form>
+</center>
+    </div>
+</body>
+{% endblock %}

@@ -1,0 +1,47 @@
+<!-- templates/registration/login.html -->
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<html>
+<head>
+<style>
+    body {
+  background-image: url('https://img.freepik.com/free-photo/shiba-inu-dog-leash-male-legs-outdoors_259150-59345.jpg?t=st=1649285740~exp=1649286340~hmac=2fe087c789b4b6ced1ec909efa19fee8d9a94fb1c37fd658fd7e805097cd4753&w=1380');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* {
+  box-sizing: border-box;
+}
+.main {
+  background: lightblue;
+  border-radius: 25px;
+  float: left;
+  width: 25%;
+  height: 230px;
+  padding: 10px 15px;
+  margin-top: 70px;
+  margin-left: 25px;
+  opacity: .8;
+}
+
+</style>
+</head>
+</html>
+
+<div class="main">
+<h2>Log In</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Log In</button> <br><br>
+  <a href="{% url 'home' %}">Back</a>
+</form>
+</div>
+{% endblock %}

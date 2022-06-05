@@ -1,0 +1,16 @@
+    form = {'trip_id': '100',
+              'dog_owner': owner1,
+              'date': 'July 1 2022',
+              'time': '10:00',
+              'endtime': '12:00',
+              'address': 'dsfsdfsdf',
+              'comments': 'sdfdsfdsfsd',
+              'duration': '2',
+              'price': '100',
+              'doggiesitter': 'Boaz',
+              'is_taken': True,
+              'is_done': True
+              }
+    tripform = TripForm(form)
+    
+    print(tripform.is_valid())

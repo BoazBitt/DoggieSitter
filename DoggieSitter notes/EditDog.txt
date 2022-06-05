@@ -1,0 +1,81 @@
+***********Views
+
+class EditDog(View):
+    name =''
+    def get(self, request, user_id):
+        user = User.objects.get(pk=user_id)
+        all = Dog.objects.filter(owner = user)
+        namelist = []
+        for i in all:
+            namelist.append(i.name)
+        request.method = 'POST'
+        return render(request, 'EditDog.html', {'form_dogs': namelist, 'ok?': 'yes!'})
+
+    def post(self, request, user_id):
+        if request.method == 'POST' and 'dropdown' in request.POST.keys():
+            self.name = request.POST['dropdown']
+            user = User.objects.get(pk=user_id)
+            all = Dog.objects.filter(owner = user)
+            for i in all:
+                if i.name == self.name:
+                    tdog = i
+            form = DogForm(instance=tdog)
+            return render(request, 'EditDog.html', {'form_user': form, 'ok?': 'yes!'})
+        else:
+            form = DogForm(request.POST)
+            if form.is_valid():
+                user = User.objects.get(pk=user_id)
+                all = Dog.objects.filter(owner=user)
+                print("*************************")
+                print(self.name)
+                for i in all:
+                    if i.name == self.name:
+                        tdog = i
+                form = DogForm(instance=tdog)
+                tdog.name = form.cleaned_data['name']
+                tdog.name = form.cleaned_data['age']
+                tdog.name = form.cleaned_data['gender']
+                tdog.name = form.cleaned_data['race']
+                tdog.name = form.cleaned_data['size']
+                tdog.name = form.cleaned_data['hobby']
+                tdog.name = form.cleaned_data['med']
+                tdog.save()
+                return render(request, 'home.html', {'ok?': 'form is valid!'})
+            return render(request, 'EditDog.html', {'form_user': form, 'ok?': 'form is not valid!'})
+
+
+
+****************************HTML 
+
+  {%for i in form_dogs %}
+  <form action="" name = "select" method="post" >
+  <select name="dropdown">
+
+      <option selected="selected" disabled>Objects on page:</option>
+              <option value= {{i}} >{{i}}</option>
+      </select>
+    {% endfor %}
+    <button class="w3-button w3-green w3-round-xlarge " type="submit">SUBMIT</button>
+    {% csrf_token %}
+  </form>
+
+{% if  not method == 'post'%}
+        <center>
+            <div class="main">
+              <center>
+                <h1><span >Change Dog Info.</span></h1><br>
+                  <form action="" method="post" name="form">
+                      {% csrf_token %}
+                      {{form_user.as_p}}
+                      <button class="w3-button w3-green w3-round-xlarge " type="submit">SUBMIT</button>
+                      <a class="w3-button w3-green w3-round-xlarge " href="{% url 'home' %}">Back to home</a>
+                  </form>
+              </center>
+            </div>
+          </center>
+
+{% endif %}
+
+
+***********************URLS
+    path('EditDog/<user_id>', views.EditDog.as_view(), name='EditDog'),

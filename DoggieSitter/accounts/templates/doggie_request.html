@@ -1,0 +1,136 @@
+<!-- templates/registration/login.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}New Doggiesitters{% endblock %}
+
+{% block content %}
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+
+.u-section-1 .u-image-1 {
+  height: 550px;
+  margin-top: -32%;
+  margin-bottom: 0;
+  margin-right: 60%;
+  padding-left:15px;
+}
+
+.clearfix{
+    clear:both
+}
+
+.w3-btn {width:150px;}
+    body {
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* {
+  box-sizing: border-box;
+}
+.main {
+  background: lightblue;
+  border-radius: 25px;
+  width: 400px;
+  height: auto;
+  padding: 10px 15px;
+  margin-top: 50px;
+  margin-left: 40%;
+  opacity: .8;
+  text-align: center;
+}
+
+.container .btn {
+  position: absolute;
+  top: 92%;
+  left: 14%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: #555;
+             <span class="btn w3-button w3-green w3-round-xlarge"><a href="{% url 'signup' %}">Sign Up</a></span>
+  color: white;
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+}
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+</style>
+</head>
+
+</html>
+<body id="bg" style="background-image: url('{% static '/accounts/kim.jpg' %}')">
+
+{% if user.is_authenticated %}
+  {% if user.is_superuser %}          <!--  admin - logged in -->
+    <br>
+
+    <div class="main">
+      {% if num > 0 %}
+        There is {{ num }} doggiesitters waiting to approve <br><br>
+
+        {% for us in usr %}
+          Username: {{ us }} &nbsp -> &nbsp Id: {{ us.id }} <br>
+        {% endfor %}
+        <br><br>
+
+      <a href="{% url 'user_info' %}">
+        <button>See user info</button>
+      </a><br>
+      <a href="{% url 'admin_actions' %}">
+        <button>Approve in admin actions</button>
+      </a><br>
+      <a href="{% url 'home' %}">
+        <button>Back to home</button>
+      </a>
+
+      {% else %}
+        There isn't new doggiesitters requests. <br><br>
+        <a href="{% url 'home' %}">
+          <button>Back to home</button>
+        </a>
+      {% endif %}
+
+    </div>
+
+  {% endif %}
+{% endif %}
+
+</body>
+{% endblock %}

@@ -1,0 +1,7 @@
+84%  + html
+
+coverage run .\manage.py test -v 2 ; coverage report; coverage html
+
+
+91% no Star-ratings
+coverage run --source "accounts,dog"   .\manage.py test -v 2; coverage report

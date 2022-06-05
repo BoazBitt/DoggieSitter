@@ -1,0 +1,13 @@
+pip install pipenv
+
+pipenv install django
+
+pipenv shell
+
+django-admin startproject DoggieSitter
+
+cd DoggieSitter
+
+python manage.py runserver
+
+python manage.py startapp

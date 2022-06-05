@@ -1,0 +1,24 @@
+echo "# DoggieSitter" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+https://github.com/Project-Management-SCE/PM2022_TEAM_3.git
+git push -u origin main
+
+
+
+
+git remote add origin https://github.com/BoazBitt/DoggieSitter.git
+git branch -M main
+git push -u origin main
+
+
+git add filename
+git commit -m " commit "
+branch -M main
+git remote add origin https://github.com/Project-Management-SCE/PM2022_TEAM_3.git
+push -u origin main
+
+
+int argc, const char * argv[]

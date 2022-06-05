@@ -1,0 +1,151 @@
+pipeline {
+    agent none
+    stages
+	{
+        stage('Install requirements')
+		{
+		    agent
+			{
+                	docker
+				{
+                    		image 'python:3.7'
+                		}
+           		 }
+            	    steps{
+                    withEnv(["HOME=${env.WORKSPACE}"])
+		    {
+			sh 'python -m pip install django==3.2.13'
+			dir("jenkins") 
+			{
+				sh 'python -m pip install --upgrade pip --user'
+				sh 'python -m pip install -r requirements.txt'
+			}
+			dir("DoggieSitter") {
+			sh 'pip install coverage'
+			sh 'pip install django-admin-actions'
+// 			sh 'python manage.py flush --no-input'
+			sh 'rm  -f -r /mymigrations'
+		 	sh 'pip install googlemaps'
+			sh 'pip install geopy'
+			sh 'pip install django_google_maps'
+// 			sh 'pip install django-star-ratings'	
+			sh 'python manage.py makemigrations'
+			sh 'python manage.py migrate'
+			
+			
+		    }
+                }
+            }
+        }
+        stage('Compile'){
+            agent{
+                docker{
+                    image 'python:3.7'
+                }
+            }
+            steps{
+                withEnv(["HOME=${env.WORKSPACE}"]){
+			 sh 'python -m compileall PM2022_TEAM_3//'//manage.py'
+                    	 //sh 'pip install django_jenkins'
+			 sh 'pip install django-crispy-forms' 
+                }
+            }
+        }
+        stage('Unit-Tests'){
+            agent{
+                docker{
+                    image 'python:3.7'
+                }
+            }
+            steps{
+		 withEnv(["HOME=${env.WORKSPACE}"]){
+		    dir("DoggieSitter"){
+			   sh "python -m coverage run -a manage.py test --tag=Unit-Test"
+			   
+                    }
+		}
+            }
+         }
+	
+	     stage('Integration-Tests'){
+            agent{
+                docker{
+                    image 'python:3.7'
+                }
+            }
+            steps{
+		 withEnv(["HOME=${env.WORKSPACE}"]){
+		    dir("DoggieSitter"){
+			   sh "python -m coverage run -a manage.py test --tag=Integration-test"
+                    }
+		}
+            }
+         }
+	stage('Hackaton-Tests'){
+            agent{
+                docker{
+                    image 'python:3.7'
+                }
+            }
+            steps{
+		 withEnv(["HOME=${env.WORKSPACE}"]){
+		    dir("DoggieSitter"){
+			   sh "python -m coverage run -a manage.py test --tag=Hackaton"
+                    }
+		}
+            }
+         }
+		 stage('Pylint Metric'){
+            agent{
+                docker{
+                    image 'python:3.7'
+                }
+            }
+            steps{
+		 withEnv(["HOME=${env.WORKSPACE}"]){
+		    dir("DoggieSitter"){
+			    sh 'pip install black'
+			    sh 'python -m black accounts dog '
+			    sh 'pip install pylint-django'
+			    sh 'python -m pylint --exit-zero dog Dogisiter '
+//  			    sh 'python -m pylint .\accounts\ .\Dogisiter\  --load-plugins=pylint_django'
+			   
+                    }
+		}
+            }
+         }
+		
+		 stage('Cyclomatic Complexity Metric'){
+            agent{
+                docker{
+                    image 'python:3.7'
+                }
+            }
+            steps{
+		 withEnv(["HOME=${env.WORKSPACE}"]){
+		    dir("DoggieSitter"){
+			    sh 'pip install radon'
+			    sh 'python -m radon cc  accounts -a'
+                    }
+		}
+            }
+         }
+	  stage('Coverage'){
+            agent{
+                docker{
+                    image 'python:3.7'
+                }
+            }
+            steps{
+		 withEnv(["HOME=${env.WORKSPACE}"]){
+		    dir("DoggieSitter"){
+			sh 'python -m pip uninstall coverage --yes'
+			sh 'python -m pip install coverage'
+			sh 'python -m coverage report --ignore-errors'
+		    
+                    }
+		}
+            }
+         }
+    }
+}

@@ -1,0 +1,125 @@
+<!-- templates/registration/signup.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}successful action{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+.u-section-1 .u-image-1 {
+  height: 550px;
+  margin-top: -32%;
+  margin-bottom: 0;
+  margin-right: 60%;
+  padding-left:15px;
+}
+
+.clearfix{
+    clear:both
+}
+
+.w3-btn {width:150px;}
+    body {
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.b {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.b:hover {background-color: #3e8e41}
+
+.b:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+}
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+</style>
+</head>
+<body id="bg" style="background-image: url('{% static '/accounts/kim.jpg' %}')">
+
+{% if user.is_authenticated %}
+  {% if user.is_superuser %}          <!--  admin - logged in -->
+    <div class="topnav">
+      <a href="{% url 'home' %}">Home</a>
+      <a href="#news">Map</a>
+      <a href="{% url 'gallery' %}">Gallery</a>
+      <a href="{% url 'change_password' user.username %}">change password</a>
+      <a href="{% url 'Add' %}">Add user</a>
+      <a href="{% url 'Terms' %}">Terms</a>
+      <a href="{% url 'user_info' %}">User Info</a>
+      <a href="{% url 'about' %}">About & Contact</a>
+      <a href="{% url 'admin_actions' %}">Admin Actions</a>
+      <a href="{% url 'changeinfo' user.id %}">Change Personal Info.</a>
+      <a href="{% url 'logout' %}">Log Out</a>
+    </div>
+    {% endif %}
+{% endif %}
+<center>
+
+
+<h1><span style="background-color:white;">{{ result }}</span></h1><br>
+
+  {% if user.is_superuser %}
+    <h2><a href="{% url 'user_info' %}">View changes on user information table</a></h2>
+  {% else %}
+    <h2>You're don't admin anymore, <a href="{% url 'home' %}">back home</a></h2>
+  {% endif %}
+
+
+
+</center>
+</body>
+</html>
+
+
+{% endblock %}

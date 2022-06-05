@@ -1,0 +1,214 @@
+<!-- templates/registration/login.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+.u-section-1 .u-image-1 {
+  height: 550px;
+  margin-top: -32%;
+  margin-bottom: 0;
+  margin-right: 60%;
+  padding-left:15px;
+}
+
+.clearfix{
+    clear:both
+}
+
+.w3-btn {width:150px;}
+    body {
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* {
+  box-sizing: border-box;
+}
+.main {
+  background: lightblue;
+  border-radius: 25px;
+  width: 25%;
+  height: 210px;
+  padding: 10px 15px;
+  margin-top: 480px;
+  margin-left: 60%;
+  opacity: .8;
+  text-align: center;
+}
+
+.container .btn {
+  position: absolute;
+  top: 92%;
+  left: 14%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: #555;
+             <span class="btn w3-button w3-green w3-round-xlarge"><a href="{% url 'signup' %}">Sign Up</a></span>
+  color: white;
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+}
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+</style>
+</head>
+
+</html>
+<body id="bg" style="background-image: url('{% static '/accounts/kim.jpg' %}')">
+
+{% if user.is_authenticated %}
+  {% if user.is_superuser %}          <!--  admin - logged in -->
+    <div class="topnav">
+      <a class="active" href="{% url 'home' %}">Home</a>
+      <a href="{% url 'DogPage' user.id %}">Dog Page</a>
+      <a href="{% url 'addtrip' user.username %}">Add trip</a>
+      <a href="{% url 'alltrips' user.username %}">My Trips</a>
+      <a href="{% url 'taken' user.username %}">Taken trips</a>
+      <a href="{% url 'Rate' user.username %}">Rate Doggiesitter</a>
+      <a href="{% url 'gallery' %}">Gallery</a>
+      <a href="{% url 'change_password' user.username %}">change password</a>
+      <a href="{% url 'Add' %}">Add user</a>
+      <a href="{% url 'Terms' %}">Terms</a>
+      <a href="{% url 'user_info' %}">User Info</a>
+      <a href="{% url 'about' %}">About & Contact</a>
+      <a href="{% url 'admin_actions' %}">Admin Actions</a>
+      <a href="{% url 'logout' %}">Log Out</a>
+    </div>
+    <br>
+    &nbsp&nbsp
+    <span style="background-color:lightblue; opacity: .7; border:3px solid #ccc; font:26px/26px Georgia, Garamond, Serif;">
+       Hi admin <br><br><br>
+      <form action="{% url 'doggie_request' %}" method="POST">
+        {% csrf_token %}
+        &nbsp&nbsp <label style="background:lightgray" for="approve_id">Check for new doggiesitters requests: </label>&nbsp<button id="approve_id" style="color:blue" type="submit">Search</button>
+      </form>
+    </span>
+
+  {% else %}                        <!--  account - logged in -->
+
+    {% if not user.accounts.approved %}
+      {% if user.accounts.is_doggiesitter %}          <!-- doggiesitter not approved yet -->
+        <div class="topnav">
+          <a class="active" href="{% url 'home' %}">Home</a>
+          <a href="{% url 'gallery' %}">Gallery</a>
+          <a href="{% url 'change_password' user.username %}">change password</a>
+          <a href="{% url 'about' %}">About & Contact</a>
+          <a href="{% url 'changeinfo' user.id %}">Change My Info.</a>
+          <a href="{% url 'logout' %}">Log Out</a>
+        </div>
+
+          <br><br>
+          <h2><span style="background-color:white; opacity: .7; border:3px solid #ccc; font:26px/26px Georgia, Garamond, Serif;">
+            Thank you for your goodwill to join our DoggieSitters family <br>
+            We need to verify you in our system before you can start working with us. We promise that it will not take so long time. <br>
+            Thank you for your patience.
+          </span></h2>
+
+      {% else %}                                    <!--  dog owner -->
+        {% if not user.is_superuser %}
+          <div class="topnav">
+            <a class="active" href="{% url 'home' %}">Home</a>
+            <a href="{% url 'addtrip' user.username %}">Add trip</a>
+            <a href="{% url 'alltrips' user.username %}">My trips</a>
+            <a href="{% url 'taken' user.username %}">Taken trips</a>
+            <a href="{% url 'Rate' user.username %}">Rate Doggiesitter</a>
+            <a href="{% url 'DogPage' user.id %}">Dog Page</a>
+            <a href="{% url 'gallery' %}">Gallery</a>
+            <a href="{% url 'change_password' user.username %}">change password</a>
+            <a href="{% url 'Feedback' %}">Add Feedback</a>
+            <a href="{% url 'ShowFeedback' %}">Show Feedback</a>
+            <a href="{% url 'about' %}">About & Contact</a>
+            <a href="{% url 'changeinfo' user.id %}">Change My Info.</a>
+            <a href="{% url 'logout' %}">Log Out</a>
+          </div>
+        {% endif %}
+    {% endif %}
+
+  {% else %}
+    {% if user.accounts.is_doggiesitter %}          <!--  approved doggiesitter -->
+      <div class="topnav">
+        <a class="active" href="{% url 'home' %}">Home</a>
+        <a href="{% url 'alltrips' user.username %}">Available trips</a>
+        <a href="{% url 'upcoming_trips' user.username %}">Upcoming trips</a>
+        <a href="{% url 'vet_map' user.username %}">Vet' map</a>
+        <a href="{% url 'parks' user.username %}">Parks</a>
+        <a href="{% url 'gallery' %}">Gallery</a>
+        <a href="{% url 'change_password' user.username %}">change password</a>
+        <a href="{% url 'Feedback' %}">Add Feedback</a>
+        <a href="{% url 'ShowFeedback' %}">Show Feedback</a>
+        <a href="{% url 'about' %}">About & Contact</a>
+        <a href="{% url 'changeinfo' user.id %}">Change My Info.</a>
+        <a href="{% url 'logout' %}">Log Out</a>
+      </div>
+
+     <h2> Which dog would you like to walk with today? </h2>
+    {% endif %}
+  {% endif %}
+  <br><br><br>
+  <span style="background-color:white; opacity: .7; border:3px solid #ccc; font:20px/26px Georgia, Garamond, Serif;">
+    Personal Information<br>
+    {% if not user.is_superuser %}
+      First Name: {{ user.accounts.first_name }}<br>
+      Last Name: {{ user.accounts.last_name }}<br>
+      Mail: {{ user.accounts.email }}<br>
+      Phone Number: {{ user.accounts.phone_number }}<br>
+      Date of Birth: {{ user.accounts.date_of_birth }}
+    {% else %}
+      First Name: {{ user.first_name }}<br>
+      Last Name: {{ user.last_name }}<br>
+      Mail: {{ user.email }}<br>
+    {% endif %}
+  {% endif %}
+  </span>
+{% else %}
+    <div class="main">
+        <h1>Already a member? <br> Welcome back, </h1> <h3><a href="{% url 'login' %}">Click here</a> to to login.</h3>
+    </div>
+    <section class="container u-clearfix u-section-1" id="sec-dcda" >
+        <img class="u-expanded-height u-image u-image-default u-image-1" src="{% static '/accounts/nadav2.png' %}" alt="" data-image-width="1200" data-image-height="1600">
+        <span class="btn w3-button w3-green w3-round-xlarge"><a href="{% url 'signup' %}">Sign Up</a></span>
+    </section>
+{% endif %}
+
+</body>
+{% endblock %}
