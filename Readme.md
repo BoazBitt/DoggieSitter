@@ -33,7 +33,7 @@ Delete message (as owner or as receiver)
 
 Registration method
 
- Docomentation 
+Documentation 
 
 
 
